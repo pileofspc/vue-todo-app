@@ -24,7 +24,7 @@ let newOptions = {
                     {
                         loader: 'css-loader',
                         options: {
-                            url: false,
+                            url: true,
                         }
                     },
                     {
@@ -42,38 +42,8 @@ let newOptions = {
 
                         }
                     },
-                    'postcss-loader',
                     // 'resolve-url-loader',
                     'sass-loader'
-                ],
-            },
-            {
-                test: /\.less$/i,
-                use: [
-                    require("mini-css-extract-plugin").loader,
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            url: false,
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            postcssOptions: {
-                                plugins: [
-                                    require('autoprefixer'),
-                                    require('mqpacker'),
-                                    require('cssnano')({
-                                        preset: [require('cssnano-preset-default')],
-                                    }),
-                                ],
-                            },
-
-                        }
-                    },
-                    // 'resolve-url-loader',
-                    'less-loader',
                 ],
             },
         ]

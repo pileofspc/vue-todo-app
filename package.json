@@ -23,12 +23,9 @@
     "cssnano-preset-default": "^5.2.13",
     "dependency-cruiser": "^12.11.1",
     "eslint": "^8.34.0",
-    "eslint-config-react-app": "^7.0.1",
     "eslint-webpack-plugin": "^4.0.0",
     "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.0",
-    "less": "^4.1.3",
-    "less-loader": "^11.1.0",
     "mini-css-extract-plugin": "^2.6.1",
     "mqpacker": "^7.0.0",
     "postcss": "^8.4.18",
@@ -40,7 +37,6 @@
     "svg-inline-loader": "^0.8.2",
     "svg-sprite-loader": "^6.0.11",
     "webpack": "^5.74.0",
-    "webpack-bundle-analyzer": "^4.8.0",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.11.1",
     "webpack-merge": "^5.8.0"
@@ -51,8 +47,6 @@
     "d3": "^7.7.0",
     "date-fns": "^2.29.3",
     "external-svg-loader": "^1.6.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "uuid": "^9.0.0"
   },
   "imports": {

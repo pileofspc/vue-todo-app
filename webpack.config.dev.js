@@ -44,31 +44,6 @@ let newOptions = {
                     'sass-loader',
                 ],
             },
-            {
-                test: /\.less$/i,
-                use: [
-                    require("mini-css-extract-plugin").loader,
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            url: true,
-                        }
-                    },
-                    // {
-                    //     loader: 'postcss-loader',
-                    //     options: {
-                    //         postcssOptions: {
-                    //             plugins: [
-                    //                 // require('autoprefixer')
-                    //             ],
-                    //         },
-                            
-                    //     }
-                    // },
-                    // 'resolve-url-loader',
-                    'less-loader',
-                ],
-            },
         ]
     },
 }

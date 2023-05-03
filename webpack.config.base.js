@@ -110,17 +110,6 @@ module.exports = exports = {
                             filename: `${PATHS.distImg}/static/[name][ext]`
                         }
                     },
-                    // Следующее правило чисто для "эмуляции" бэка, чтобы не копировать вручную эти файлы. Картинки товаров
-                    // должны управляться бэком, а не фронтом, поэтому мы просто запрашиваем с бэка данные о продукте, среди
-                    // которых есть и путь до картинки товара, которая просто лежит отдельно. При этом во фронте она никак не
-                    // должна фигурировать.
-                    {
-                        test: /external\\.*\.(png|jpg|jpeg|gif|svg)$/i,
-                        type: 'asset/resource',
-                        generator: {
-                            filename: `${PATHS.distImg}/static/[name][ext]`
-                        }
-                    },
                     {
                         test: /\.(png|jpg|jpeg|gif|svg)$/i,
                         type: 'asset/resource',
