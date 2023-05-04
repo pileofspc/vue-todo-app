@@ -1,45 +1,45 @@
 const path = require('path');
 const fs = require('fs');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// const ESLintWebpackPlugin = require('eslint-webpack-plugin');
+const SpritePlugin = require('svg-sprite-loader/plugin');
+const { VueLoaderPlugin } = require('vue-loader');
+const helpers = require('./webpack-helpers/webpack-helpers');
 
 const PATHS = {
     root: path.resolve(__dirname),
-    helpers: path.resolve(__dirname, 'webpack-helpers', 'webpack-helpers.js'),
+    // helpers: path.resolve(__dirname, 'webpack-helpers', 'webpack-helpers.js'),
     jsconfig: path.resolve(__dirname, 'jsconfig.json'),
     src: path.resolve(__dirname, 'src'),
     dist: path.resolve(__dirname, 'dist'),
 
     pages: path.resolve(__dirname, 'src', 'pages'),
-    js: path.resolve(__dirname, 'src', 'js'),
+    modules: path.resolve(__dirname,'src', 'modules'),
+    components: path.resolve(__dirname, 'src', 'components'),
     assets: path.resolve(__dirname, './src', 'assets'),
-    sass: path.resolve(__dirname, 'src', 'assets', 'sass'),
-    modules: path.resolve(__dirname,'src', 'js', 'modules'),
-    components: path.resolve(__dirname, 'src', 'js', 'components'),
-    img: path.resolve(__dirname, 'src', 'assets', 'img'),
+    images: path.resolve(__dirname, 'src', 'assets', 'images'),
+    styles: path.resolve(__dirname, 'src', 'assets', 'styles'),
+    external: path.resolve(__dirname, 'src', 'assets', 'external'),
 
+    distJs: '.',
     distAssets: 'assets',
-    distJs: 'assets/js',
     distCss: 'assets/css',
-    distImg: 'assets/img',
+    distImg: 'assets/images',
 }
 global.PATHS = PATHS;
-
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-// const ESLintWebpackPlugin = require('eslint-webpack-plugin');
-const SpritePlugin = require('svg-sprite-loader/plugin');
-const helpers = require(PATHS.helpers);
-
 
 const ENTRIES = {};
 
 // Array of names of *.html files:
-let PAGES = helpers.getFilesOfExt(PATHS.pages, '.html');
+let PAGES = helpers.getFolders(PATHS.pages);
+// let PAGES = helpers.getFilesOfExt(PATHS.pages, '.html');
 
 // Array of HtmlWebpackPlugin entries for PAGES:
 let htmlPluginPages = PAGES.map(
     (page) => new HtmlWebpackPlugin({
-        template: `${PATHS.pages}/${page}`,
-        filename: `${page}`,
+        template: path.join(PATHS.pages, page, `${page}.html`),
+        filename: `${page}.html`,
         chunks: [path.parse(page).name],
     })
 );
@@ -47,7 +47,7 @@ let htmlPluginPages = PAGES.map(
 // Js entries for each page of PAGES:
 PAGES.forEach((page) => {
     let entryName = path.parse(page).name;
-    let filePath = path.join(PATHS.js, `${entryName}.js`);
+    let filePath = path.join(PATHS.pages, entryName, `${entryName}.js`);
     if (fs.existsSync(filePath)) {
         ENTRIES[entryName] = filePath;
     }
@@ -59,8 +59,8 @@ module.exports = exports = {
         alias: {
             "@modules": PATHS.modules,
             "@components": PATHS.components,
-            "@sass": PATHS.sass,
-            "@img": PATHS.img,
+            "@styles": PATHS.styles,
+            "@images": PATHS.images,
         }
     },
     mode: 'development',
@@ -81,6 +81,10 @@ module.exports = exports = {
                         presets: ['@babel/preset-react'],
                     }
                 }
+            },
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader'
             },
             {
                 oneOf: [
@@ -164,5 +168,6 @@ module.exports = exports = {
             filename: `${PATHS.distCss}/[name].css`,
         }),
         // new ESLintWebpackPlugin(),
+        new VueLoaderPlugin(),
     ]
 };
