@@ -1,16 +1,18 @@
 <script setup>
     const props = defineProps({
-        todoId: String,
+        todoId: [String, Number],
         title: String,
         isDone: Boolean,
     });
 
-    // const emit = defineEmits(['toggle']);
+    const emit = defineEmits([
+        'todo-toggled'
+    ]);
 </script>
 
 <template>
-    <label class="todo" :key="todoId">
-        <input type="checkbox" class="todo__input" :checked="isDone">
+    <label class="todo">
+        <input type="checkbox" class="todo__input" :checked="isDone" @click="emit('todo-toggled')">
         <span>{{ title }}</span>
     </label>
 </template>
@@ -22,6 +24,7 @@
         padding: 2px 4px;
         margin-top: 4px;
         border-radius: 4px;
+        color: black;
 
         background-color: rgb(176, 190, 204);
 

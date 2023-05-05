@@ -1,44 +1,44 @@
 <script setup>
-    import { ref } from 'vue';
+    import { onMounted, ref, watch } from 'vue';
     import {v4 as uuid}  from 'uuid';
     import TodoList from '@modules/TodoList/TodoList.vue';
 
-    let todos = ref([
-        {
-            todoId: '0',
-            title: 'Сделать что-то',
-            isDone: false,
-        },
-        {
-            todoId: '1',
-            title: 'Сделать что-то 2',
-            isDone: true,
-        },
-        {
-            todoId: '2',
-            title: 'Сделать что-то 3',
-            isDone: false,
+    let todos = ref([]);
+
+    const LOCAL_STORAGE_KEY = 'todoAppVue.todos';
+
+    onMounted(() => {
+        loadTodos();
+        watch(todos, saveTodos, { deep: true });
+    })
+    
+    
+    const inputValue = ref('');
+
+    function loadTodos() {
+        const storedTodos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+        if (storedTodos) {
+            todos.value = storedTodos
         }
-    ]);
-
-    const inputRef = ref();
-
-    function toggleTodo(id) {
-        let todo = todos.find(todo => todo.todoId === id);
-        todo.isDone = !todo.isDone
+    }
+    function saveTodos() {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(todos.value));
     }
 
+    function toggleTodo(post) {
+        let todo = todos.value.find(todo => todo.todoId === post.todoId);
+        todo.isDone = !todo.isDone;
+    }
     function addTodo() {
         todos.value.push(
             {
                 todoId: uuid(),
-                title: inputRef.value.value,
+                title: inputValue.value,
                 isDone: false,
             }
         );
-        inputRef.value.value = '';
+        inputValue.value = '';
     }
-
     function clearDone() {
         todos.value = todos.value.filter((todo) => !todo.isDone)
     }
@@ -46,17 +46,18 @@
 
 <template>
     <h1 class="h1">Todo App</h1>
-    <input type="text" ref="inputRef">
+    <input type="text" v-model="inputValue">
     <input type="button" value="Add Todo" @click="addTodo">
     <input type="button" value="Clear Done" @click="clearDone">
-    <TodoList :todos="todos"/>
+    <TodoList 
+        :todos="todos"
+        @todo-toggled="toggleTodo"
+    />
 </template>
 
 <style lang="scss">
     body {
         background-color: rgb(52, 64, 78);
-    }
-    .h1 {
         color: white;
     }
 </style>
